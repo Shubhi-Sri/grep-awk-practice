@@ -1,0 +1,11 @@
+🟢 Using grep
+
+Find all lines containing ERROR.
+
+Count how many WARN messages are in the log.
+
+Find all lines where Alice appears (case-sensitive).
+
+Show only the lines that end with “logged out”.
+
+Find all lines with either ERROR or WARN.
