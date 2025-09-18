@@ -2,12 +2,89 @@
 
 Find all lines containing ERROR.
 
+Solution:  grep "ERROR" chatgptlog.log
+2025-09-18 10:13:01 ERROR Failed login attempt for user Alice
+2025-09-18 10:16:02 ERROR Database connection failed
+2025-09-18 10:20:12 ERROR File not found: /var/www/html/index.html
+
 Count how many WARN messages are in the log.
+
+Solution:  grep -c "WARN" chatgptlog.log
+2
 
 Find all lines where Alice appears (case-sensitive).
 
+Solution: grep -i "Alice" chatgptlog.log
+2025-09-18 10:13:01 ERROR Failed login attempt for user Alice
+2025-09-18 10:17:10 INFO User Alice logged out
+
 Show only the lines that end with “logged out”.
 
+Solution: 
+ grep -i "logged out" chatgptlog.log
+2025-09-18 10:17:10 INFO User Alice logged out
+2025-09-18 10:21:01 INFO User John logged out
 Find all lines with either ERROR or WARN
 
+Find all lines with either ERROR or WARN.
+
+Solution:
+grep -E "ERROR|WARN" chatgptlog.log
+2025-09-18 10:13:01 ERROR Failed login attempt for user Alice
+2025-09-18 10:14:22 WARN Disk space low on /dev/sda1
+2025-09-18 10:16:02 ERROR Database connection failed
+2025-09-18 10:18:33 WARN High memory usage detected
+2025-09-18 10:20:12 ERROR File not found: /var/www/html/index.html
+
 Using Awk.
+
+Find all lines containing ERROR.
+
+Solution:  awk '$3=="ERROR" {print}' chatgptlog.log
+2025-09-18 10:13:01 ERROR Failed login attempt for user Alice
+2025-09-18 10:16:02 ERROR Database connection failed
+2025-09-18 10:20:12 ERROR File not found: /var/www/html/index.html
+
+Count how many WARN messages are in the log.
+
+Solution:
+ awk '$3=="WARN" {count++} END {print count}' chatgptlog.log
+2
+
+Find all lines where Alice appears (case-sensitive).
+Print only the log level (INFO / ERROR / WARN).
+
+Solution:
+=================INFO=================================
+ awk '/INFO/ {print}' chatgptlog.log
+2025-09-18 10:12:34 INFO User John logged in
+2025-09-18 10:15:45 INFO User Bob uploaded a file
+2025-09-18 10:17:10 INFO User Alice logged out
+2025-09-18 10:19:44 INFO User Charlie logged in
+2025-09-18 10:21:01 INFO User John logged out
+=====================INFO+WARN============================
+ awk '/INFO|WARN/ {print}' chatgptlog.log
+2025-09-18 10:12:34 INFO User John logged in
+2025-09-18 10:14:22 WARN Disk space low on /dev/sda1
+2025-09-18 10:15:45 INFO User Bob uploaded a file
+2025-09-18 10:17:10 INFO User Alice logged out
+2025-09-18 10:18:33 WARN High memory usage detected
+2025-09-18 10:19:44 INFO User Charlie logged in
+2025-09-18 10:21:01 INFO User John logged out
+
+Print the username of all successful logins (look for lines with "logged in").
+
+Count how many times John appears in the log.
+
+Print all ERROR messages only (ignore date/time/log level).
+
+Solution:
+ awk '$3=="ERROR" {print $4" "$5" " $6" " $7}' chatgptlog.log
+Failed login attempt for
+Database connection failed
+File not found: /var/www/html/index.html
+
+Find the total number of lines (log entries).
+Solution:
+ awk 'END {print NR}' chatgptlog.log
+11
